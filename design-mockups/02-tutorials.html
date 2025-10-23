@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学做菜教程 - 试试做菜</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            padding-bottom: 80px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            padding: 20px 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .search-bar {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .search-bar input {
+            background: none;
+            border: none;
+            color: white;
+            flex: 1;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .search-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+        
+        .filter-tabs {
+            background: white;
+            padding: 16px;
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .filter-tab {
+            background: #f5f5f5;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-tab.active {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .content {
+            padding: 16px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #333;
+        }
+        
+        .tutorial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .tutorial-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .tutorial-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .tutorial-image {
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(45deg, #ff9a9e, #fecfef);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            position: relative;
+        }
+        
+        .difficulty-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        
+        .tutorial-info {
+            padding: 12px;
+        }
+        
+        .tutorial-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        .tutorial-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .tutorial-time {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .tutorial-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .star {
+            color: #ffd700;
+        }
+        
+        .featured-section {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .featured-tutorial {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .featured-tutorial:last-child {
+            border-bottom: none;
+        }
+        
+        .featured-image {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #a8edea, #fed6e3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+        
+        .featured-info {
+            flex: 1;
+        }
+        
+        .featured-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        .featured-desc {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .featured-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 100;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 12px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-item.active {
+            color: #ff6b6b;
+        }
+        
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+            background: currentColor;
+            border-radius: 50%;
+        }
+        
+        .floating-btn {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: #ff6b6b;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 4px 16px rgba(255, 107, 107, 0.4);
+            cursor: pointer;
+            z-index: 99;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部搜索区域 -->
+    <div class="header">
+        <h1>学做菜教程</h1>
+        <div class="search-bar">
+            <div class="search-icon">🔍</div>
+            <input type="text" placeholder="搜索菜谱、食材、口味...">
+        </div>
+    </div>
+    
+    <!-- 分类筛选标签 -->
+    <div class="filter-tabs">
+        <button class="filter-tab active">全部</button>
+        <button class="filter-tab">家常菜</button>
+        <button class="filter-tab">川菜</button>
+        <button class="filter-tab">粤菜</button>
+        <button class="filter-tab">湘菜</button>
+        <button class="filter-tab">素食</button>
+        <button class="filter-tab">甜品</button>
+        <button class="filter-tab">汤品</button>
+    </div>
+    
+    <div class="content">
+        <!-- 精选教程 -->
+        <div class="featured-section">
+            <h2 class="section-title">🔥 今日精选</h2>
+            
+            <div class="featured-tutorial">
+                <div class="featured-image">红烧肉</div>
+                <div class="featured-info">
+                    <div class="featured-title">经典红烧肉</div>
+                    <div class="featured-desc">肥而不腻，入口即化的传统做法</div>
+                    <div class="featured-meta">
+                        <span>⏱️ 45分钟</span>
+                        <span>⭐ 4.8分</span>
+                        <span>👥 1.2万人学过</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="featured-tutorial">
+                <div class="featured-image">宫保鸡丁</div>
+                <div class="featured-info">
+                    <div class="featured-title">正宗宫保鸡丁</div>
+                    <div class="featured-desc">酸甜微辣，下饭神器</div>
+                    <div class="featured-meta">
+                        <span>⏱️ 25分钟</span>
+                        <span>⭐ 4.9分</span>
+                        <span>👥 8.5千人学过</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 热门教程网格 -->
+        <h2 class="section-title">🌟 热门教程</h2>
+        <div class="tutorial-grid">
+            <div class="tutorial-card">
+                <div class="tutorial-image">
+                    <span class="difficulty-badge">简单</span>
+                    西红柿鸡蛋
+                </div>
+                <div class="tutorial-info">
+                    <div class="tutorial-title">西红柿炒鸡蛋</div>
+                    <div class="tutorial-meta">
+                        <div class="tutorial-time">⏱️ 15分钟</div>
+                        <div class="tutorial-rating">⭐ 4.7</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tutorial-card">
+                <div class="tutorial-image">
+                    <span class="difficulty-badge">中等</span>
+                    麻婆豆腐
+                </div>
+                <div class="tutorial-info">
+                    <div class="tutorial-title">麻婆豆腐</div>
+                    <div class="tutorial-meta">
+                        <div class="tutorial-time">⏱️ 20分钟</div>
+                        <div class="tutorial-rating">⭐ 4.6</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tutorial-card">
+                <div class="tutorial-image">
+                    <span class="difficulty-badge">简单</span>
+                    蒸蛋羹
+                </div>
+                <div class="tutorial-info">
+                    <div class="tutorial-title">嫩滑蒸蛋羹</div>
+                    <div class="tutorial-meta">
+                        <div class="tutorial-time">⏱️ 12分钟</div>
+                        <div class="tutorial-rating">⭐ 4.8</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tutorial-card">
+                <div class="tutorial-image">
+                    <span class="difficulty-badge">困难</span>
+                    糖醋里脊
+                </div>
+                <div class="tutorial-info">
+                    <div class="tutorial-title">糖醋里脊</div>
+                    <div class="tutorial-meta">
+                        <div class="tutorial-time">⏱️ 35分钟</div>
+                        <div class="tutorial-rating">⭐ 4.5</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tutorial-card">
+                <div class="tutorial-image">
+                    <span class="difficulty-badge">中等</span>
+                    青椒肉丝
+                </div>
+                <div class="tutorial-info">
+                    <div class="tutorial-title">青椒肉丝</div>
+                    <div class="tutorial-meta">
+                        <div class="tutorial-time">⏱️ 18分钟</div>
+                        <div class="tutorial-rating">⭐ 4.4</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tutorial-card">
+                <div class="tutorial-image">
+                    <span class="difficulty-badge">简单</span>
+                    紫菜蛋花汤
+                </div>
+                <div class="tutorial-info">
+                    <div class="tutorial-title">紫菜蛋花汤</div>
+                    <div class="tutorial-meta">
+                        <div class="tutorial-time">⏱️ 8分钟</div>
+                        <div class="tutorial-rating">⭐ 4.6</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 新手推荐 -->
+        <div class="featured-section">
+            <h2 class="section-title">👶 新手推荐</h2>
+            
+            <div class="featured-tutorial">
+                <div class="featured-image">煮面条</div>
+                <div class="featured-info">
+                    <div class="featured-title">基础煮面条</div>
+                    <div class="featured-desc">从零开始学会煮一碗好面条</div>
+                    <div class="featured-meta">
+                        <span>⏱️ 10分钟</span>
+                        <span>⭐ 4.9分</span>
+                        <span>👥 新手必学</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="featured-tutorial">
+                <div class="featured-image">煎蛋</div>
+                <div class="featured-info">
+                    <div class="featured-title">完美煎蛋</div>
+                    <div class="featured-desc">掌握火候，煎出完美荷包蛋</div>
+                    <div class="featured-meta">
+                        <span>⏱️ 5分钟</span>
+                        <span>⭐ 4.7分</span>
+                        <span>👥 基础技能</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 悬浮按钮 -->
+    <button class="floating-btn">+</button>
+    
+    <!-- 底部导航 -->
+    <div class="bottom-nav">
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <span>首页</span>
+        </a>
+        <a href="#" class="nav-item active">
+            <div class="nav-icon"></div>
+            <span>教程</span>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <span>点餐</span>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <span>订单</span>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <span>我的</span>
+        </a>
+    </div>
+</body>
+</html>

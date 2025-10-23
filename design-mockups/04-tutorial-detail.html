@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>红烧肉教程 - 试试做菜</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        
+        .content {
+            margin-top: 60px;
+            padding-bottom: 80px;
+        }
+        
+        .hero-section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 12px;
+        }
+        
+        .dish-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #ff9a9e, #fecfef);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        
+        .play-btn {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .dish-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        .dish-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .dish-description {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            padding: 16px 0;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 20px;
+            font-weight: 600;
+            color: #ff6b6b;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+        
+        .section {
+            background: white;
+            margin-bottom: 12px;
+            padding: 20px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .ingredients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+        }
+        
+        .ingredient-item {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .ingredient-item:hover {
+            border-color: #ff6b6b;
+            background: #fff5f5;
+        }
+        
+        .ingredient-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .ingredient-amount {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .steps-list {
+            list-style: none;
+        }
+        
+        .step-item {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .step-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-image {
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(45deg, #a8edea, #fed6e3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        
+        .step-text {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        
+        .step-tip {
+            font-size: 14px;
+            color: #666;
+            background: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 3px solid #ff6b6b;
+        }
+        
+        .tips-list {
+            list-style: none;
+        }
+        
+        .tip-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 12px;
+            background: #fff8e1;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .tip-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        
+        .tip-text {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .comments-section {
+            background: white;
+            padding: 20px;
+        }
+        
+        .comment-item {
+            display: flex;
+            gap: 12px;
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+        
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .comment-author {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .comment-rating {
+            display: flex;
+            gap: 2px;
+            font-size: 12px;
+        }
+        
+        .comment-text {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+        
+        .comment-meta {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .floating-actions {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            gap: 12px;
+            z-index: 99;
+        }
+        
+        .action-button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .start-cooking {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .start-cooking:hover {
+            background: #ff5252;
+        }
+        
+        .add-to-favorites {
+            background: white;
+            color: #ff6b6b;
+            border: 2px solid #ff6b6b;
+            flex: 0 0 auto;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .nutrition-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .nutrition-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ff6b6b;
+        }
+        
+        .nutrition-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定头部 -->
+    <div class="header">
+        <div class="header-left">
+            <button class="back-btn">←</button>
+            <div class="header-title">红烧肉</div>
+        </div>
+        <div class="header-actions">
+            <button class="action-btn">♡</button>
+            <button class="action-btn">⋯</button>
+        </div>
+    </div>
+    
+    <div class="content">
+        <!-- 主要信息区域 -->
+        <div class="hero-section">
+            <div class="dish-image">
+                <button class="play-btn">▶</button>
+                红烧肉
+            </div>
+            
+            <h1 class="dish-title">经典红烧肉</h1>
+            
+            <div class="dish-meta">
+                <div class="meta-item">
+                    <span>⏱️</span>
+                    <span>45分钟</span>
+                </div>
+                <div class="meta-item">
+                    <span>👥</span>
+                    <span>2-3人份</span>
+                </div>
+                <div class="meta-item">
+                    <span>🔥</span>
+                    <span>中等难度</span>
+                </div>
+                <div class="meta-item">
+                    <span>⭐</span>
+                    <span>4.8分</span>
+                </div>
+            </div>
+            
+            <p class="dish-description">
+                传统红烧肉做法，肥而不腻，入口即化。选用优质五花肉，经过精心调味和慢炖，呈现出诱人的红亮色泽和浓郁香味。
+            </p>
+            
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-number">1.2万</div>
+                    <div class="stat-label">学习人数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">成功率</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">856</div>
+                    <div class="stat-label">评论数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">4.8</div>
+                    <div class="stat-label">综合评分</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 食材清单 -->
+        <div class="section">
+            <h2 class="section-title">🛒 食材清单</h2>
+            <div class="ingredients-grid">
+                <div class="ingredient-item">
+                    <div class="ingredient-name">五花肉</div>
+                    <div class="ingredient-amount">500g</div>
+                </div>
+                <div class="ingredient-item">
+                    <div class="ingredient-name">生抽</div>
+                    <div class="ingredient-amount">2勺</div>
+                </div>
+                <div class="ingredient-item">
+                    <div class="ingredient-name">老抽</div>
+                    <div class="ingredient-amount">1勺</div>
+                </div>
+                <div class="ingredient-item">
+                    <div class="ingredient-name">冰糖</div>
+                    <div class="ingredient-amount">30g</div>
+                </div>
+                <div class="ingredient-item">
+                    <div class="ingredient-name">料酒</div>
+                    <div class="ingredient-amount">2勺</div>
+                </div>
+                <div class="ingredient-item">
+                    <div class="ingredient-name">生姜</div>
+                    <div class="ingredient-amount">3片</div>
+                </div>
+                <div class="ingredient-item">
+                    <div class="ingredient-name">大葱</div>
+                    <div class="ingredient-amount">2段</div>
+                </div>
+                <div class="ingredient-item">
+                    <div class="ingredient-name">八角</div>
+                    <div class="ingredient-amount">2个</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 制作步骤 -->
+        <div class="section">
+            <h2 class="section-title">👨‍🍳 制作步骤</h2>
+            <ol class="steps-list">
+                <li class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-image">切肉块</div>
+                        <div class="step-text">将五花肉洗净，切成3cm见方的块状，冷水下锅焯水去腥。</div>
+                        <div class="step-tip">💡 小贴士：焯水时加入料酒和姜片，可以更好地去除腥味。</div>
+                    </div>
+                </li>
+                
+                <li class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-image">炒糖色</div>
+                        <div class="step-text">锅内放少量油，下冰糖小火炒至糖色呈焦糖色，倒入肉块翻炒上色。</div>
+                        <div class="step-tip">💡 小贴士：炒糖色要用小火，避免炒糊变苦。</div>
+                    </div>
+                </li>
+                
+                <li class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-image">调味炖煮</div>
+                        <div class="step-text">加入生抽、老抽、料酒，放入姜片、葱段、八角，加水没过肉块。</div>
+                        <div class="step-tip">💡 小贴士：水量要适中，太多会影响收汁效果。</div>
+                    </div>
+                </li>
+                
+                <li class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-image">大火收汁</div>
+                        <div class="step-text">大火烧开后转小火炖30分钟，最后大火收汁至浓稠即可。</div>
+                        <div class="step-tip">💡 小贴士：收汁时要不断翻动，避免粘锅。</div>
+                    </div>
+                </li>
+            </ol>
+        </div>
+        
+        <!-- 营养信息 -->
+        <div class="section">
+            <h2 class="section-title">📊 营养信息</h2>
+            <div class="nutrition-grid">
+                <div class="nutrition-item">
+                    <div class="nutrition-value">520</div>
+                    <div class="nutrition-label">卡路里</div>
+                </div>
+                <div class="nutrition-item">
+                    <div class="nutrition-value">25g</div>
+                    <div class="nutrition-label">蛋白质</div>
+                </div>
+                <div class="nutrition-item">
+                    <div class="nutrition-value">45g</div>
+                    <div class="nutrition-label">脂肪</div>
+                </div>
+                <div class="nutrition-item">
+                    <div class="nutrition-value">8g</div>
+                    <div class="nutrition-label">碳水化合物</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 烹饪技巧 -->
+        <div class="section">
+            <h2 class="section-title">💡 烹饪技巧</h2>
+            <ul class="tips-list">
+                <li class="tip-item">
+                    <span class="tip-icon">🔥</span>
+                    <span class="tip-text">炒糖色是关键，要用小火慢炒，糖色呈焦糖色时立即下肉。</span>
+                </li>
+                <li class="tip-item">
+                    <span class="tip-icon">⏰</span>
+                    <span class="tip-text">炖煮时间要充足，至少30分钟，让肉质充分软烂。</span>
+                </li>
+                <li class="tip-item">
+                    <span class="tip-icon">🥄</span>
+                    <span class="tip-text">最后收汁时要大火快收，并不断翻动避免粘锅。</span>
+                </li>
+                <li class="tip-item">
+                    <span class="tip-icon">🧂</span>
+                    <span class="tip-text">调味要适中，生抽提鲜，老抽上色，不要过咸。</span>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- 用户评论 -->
+        <div class="comments-section">
+            <h2 class="section-title">💬 用户评论</h2>
+            
+            <div class="comment-item">
+                <div class="comment-avatar">张</div>
+                <div class="comment-content">
+                    <div class="comment-header">
+                        <span class="comment-author">张小厨</span>
+                        <div class="comment-rating">⭐⭐⭐⭐⭐</div>
+                    </div>
+                    <div class="comment-text">按照教程做的，非常成功！肉质软烂，色泽红亮，家人都说好吃。</div>
+                    <div class="comment-meta">2小时前</div>
+                </div>
+            </div>
+            
+            <div class="comment-item">
+                <div class="comment-avatar">李</div>
+                <div class="comment-content">
+                    <div class="comment-header">
+                        <span class="comment-author">李大厨</span>
+                        <div class="comment-rating">⭐⭐⭐⭐⭐</div>
+                    </div>
+                    <div class="comment-text">炒糖色的技巧很实用，第一次做就成功了，谢谢分享！</div>
+                    <div class="comment-meta">1天前</div>
+                </div>
+            </div>
+            
+            <div class="comment-item">
+                <div class="comment-avatar">王</div>
+                <div class="comment-content">
+                    <div class="comment-header">
+                        <span class="comment-author">王美食</span>
+                        <div class="comment-rating">⭐⭐⭐⭐</div>
+                    </div>
+                    <div class="comment-text">步骤很详细，新手也能轻松上手。就是收汁的时候要注意火候。</div>
+                    <div class="comment-meta">3天前</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 悬浮操作按钮 -->
+    <div class="floating-actions">
+        <button class="action-button start-cooking">开始制作</button>
+        <button class="action-button add-to-favorites">♡</button>
+    </div>
+</body>
+</html>

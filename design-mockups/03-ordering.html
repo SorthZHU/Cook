@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>点餐服务 - 试试做菜</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            padding-bottom: 140px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            color: white;
+            padding: 20px 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .location-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+        
+        .location-icon {
+            margin-right: 8px;
+        }
+        
+        .search-bar {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-bar input {
+            background: none;
+            border: none;
+            color: white;
+            flex: 1;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .search-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+        
+        .category-tabs {
+            background: white;
+            padding: 16px;
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-tab {
+            background: #f5f5f5;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-tab.active {
+            background: #4ecdc4;
+            color: white;
+        }
+        
+        .content {
+            padding: 16px;
+        }
+        
+        .restaurant-card {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .restaurant-header {
+            padding: 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .restaurant-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .restaurant-logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #ff9a9e, #fecfef);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .restaurant-details h3 {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+        
+        .restaurant-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .delivery-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .menu-section {
+            padding: 0 16px 16px;
+        }
+        
+        .menu-category {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 16px 0 12px;
+            color: #333;
+        }
+        
+        .dish-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f8f8f8;
+        }
+        
+        .dish-item:last-child {
+            border-bottom: none;
+        }
+        
+        .dish-image {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #a8edea, #fed6e3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+        
+        .dish-info {
+            flex: 1;
+        }
+        
+        .dish-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .dish-desc {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .dish-price {
+            font-size: 18px;
+            color: #ff6b6b;
+            font-weight: 600;
+        }
+        
+        .dish-actions {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        
+        .add-btn {
+            background: #4ecdc4;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .add-btn:hover {
+            background: #44a08d;
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        
+        .quantity-btn {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .quantity {
+            font-size: 16px;
+            font-weight: 600;
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        .cart-summary {
+            position: fixed;
+            bottom: 80px;
+            left: 16px;
+            right: 16px;
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 99;
+        }
+        
+        .cart-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .cart-icon {
+            width: 40px;
+            height: 40px;
+            background: #4ecdc4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            position: relative;
+        }
+        
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        
+        .cart-details {
+            font-size: 14px;
+        }
+        
+        .cart-total {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ff6b6b;
+        }
+        
+        .checkout-btn {
+            background: #4ecdc4;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 100;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 12px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-item.active {
+            color: #4ecdc4;
+        }
+        
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+            background: currentColor;
+            border-radius: 50%;
+        }
+        
+        .promo-banner {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .promo-text {
+            font-size: 14px;
+        }
+        
+        .promo-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部区域 -->
+    <div class="header">
+        <div class="location-bar">
+            <span class="location-icon">📍</span>
+            <span>北京市朝阳区 - 配送至您的位置</span>
+        </div>
+        <div class="search-bar">
+            <div class="search-icon">🔍</div>
+            <input type="text" placeholder="搜索餐厅、菜品...">
+        </div>
+    </div>
+    
+    <!-- 分类标签 -->
+    <div class="category-tabs">
+        <button class="category-tab active">全部</button>
+        <button class="category-tab">中式快餐</button>
+        <button class="category-tab">西式快餐</button>
+        <button class="category-tab">日韩料理</button>
+        <button class="category-tab">甜品饮品</button>
+        <button class="category-tab">火锅烧烤</button>
+    </div>
+    
+    <div class="content">
+        <!-- 优惠横幅 -->
+        <div class="promo-banner">
+            <div class="promo-text">
+                <div>🎉 新用户专享</div>
+                <div>满50减15，满100减30</div>
+            </div>
+            <button class="promo-btn">立即使用</button>
+        </div>
+        
+        <!-- 餐厅1 -->
+        <div class="restaurant-card">
+            <div class="restaurant-header">
+                <div class="restaurant-info">
+                    <div class="restaurant-logo">川</div>
+                    <div class="restaurant-details">
+                        <h3>川味小厨</h3>
+                        <div class="restaurant-meta">
+                            <div class="rating">⭐ 4.8分</div>
+                            <span>月售1200+</span>
+                            <span>人均¥35</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="delivery-info">
+                    <span>🚚 配送费¥3</span>
+                    <span>⏱️ 约30分钟</span>
+                    <span>📍 距离1.2km</span>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <div class="menu-category">🔥 招牌菜</div>
+                
+                <div class="dish-item">
+                    <div class="dish-image">宫保鸡丁</div>
+                    <div class="dish-info">
+                        <div class="dish-name">宫保鸡丁</div>
+                        <div class="dish-desc">经典川菜，鸡肉嫩滑，花生香脆</div>
+                        <div class="dish-price">¥28</div>
+                    </div>
+                    <div class="dish-actions">
+                        <button class="add-btn">加入购物车</button>
+                        <div class="quantity-control" style="display: none;">
+                            <button class="quantity-btn">-</button>
+                            <span class="quantity">1</span>
+                            <button class="quantity-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dish-item">
+                    <div class="dish-image">麻婆豆腐</div>
+                    <div class="dish-info">
+                        <div class="dish-name">麻婆豆腐</div>
+                        <div class="dish-desc">麻辣鲜香，豆腐嫩滑入味</div>
+                        <div class="dish-price">¥22</div>
+                    </div>
+                    <div class="dish-actions">
+                        <button class="add-btn">加入购物车</button>
+                    </div>
+                </div>
+                
+                <div class="menu-category">🍚 主食</div>
+                
+                <div class="dish-item">
+                    <div class="dish-image">蛋炒饭</div>
+                    <div class="dish-info">
+                        <div class="dish-name">扬州炒饭</div>
+                        <div class="dish-desc">粒粒分明，配菜丰富</div>
+                        <div class="dish-price">¥18</div>
+                    </div>
+                    <div class="dish-actions">
+                        <button class="add-btn">加入购物车</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 餐厅2 -->
+        <div class="restaurant-card">
+            <div class="restaurant-header">
+                <div class="restaurant-info">
+                    <div class="restaurant-logo">粤</div>
+                    <div class="restaurant-details">
+                        <h3>港式茶餐厅</h3>
+                        <div class="restaurant-meta">
+                            <div class="rating">⭐ 4.6分</div>
+                            <span>月售800+</span>
+                            <span>人均¥42</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="delivery-info">
+                    <span>🚚 配送费¥4</span>
+                    <span>⏱️ 约25分钟</span>
+                    <span>📍 距离0.8km</span>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <div class="menu-category">🥟 点心</div>
+                
+                <div class="dish-item">
+                    <div class="dish-image">小笼包</div>
+                    <div class="dish-info">
+                        <div class="dish-name">蟹黄小笼包</div>
+                        <div class="dish-desc">皮薄汁多，蟹黄鲜美</div>
+                        <div class="dish-price">¥32</div>
+                    </div>
+                    <div class="dish-actions">
+                        <button class="add-btn">加入购物车</button>
+                    </div>
+                </div>
+                
+                <div class="dish-item">
+                    <div class="dish-image">烧卖</div>
+                    <div class="dish-info">
+                        <div class="dish-name">糯米烧卖</div>
+                        <div class="dish-desc">传统港式点心，糯米香甜</div>
+                        <div class="dish-price">¥26</div>
+                    </div>
+                    <div class="dish-actions">
+                        <button class="add-btn">加入购物车</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 购物车摘要 -->
+    <div class="cart-summary">
+        <div class="cart-info">
+            <div class="cart-icon">
+                🛒
+                <div class="cart-badge">2</div>
+            </div>
+            <div class="cart-details">
+                <div>已选2件商品</div>
+                <div class="cart-total">¥50</div>
+            </div>
+        </div>
+        <button class="checkout-btn">去结算</button>
+    </div>
+    
+    <!-- 底部导航 -->
+    <div class="bottom-nav">
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <span>首页</span>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <span>教程</span>
+        </a>
+        <a href="#" class="nav-item active">
+            <div class="nav-icon"></div>
+            <span>点餐</span>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <span>订单</span>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <span>我的</span>
+        </a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单中心 - 试试做菜</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            padding-bottom: 80px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-title {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .order-tabs {
+            background: white;
+            padding: 0;
+            display: flex;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 68px;
+            z-index: 99;
+        }
+        
+        .order-tab {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 16px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            position: relative;
+        }
+        
+        .order-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            font-weight: 600;
+        }
+        
+        .tab-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 10px;
+            min-width: 16px;
+            text-align: center;
+        }
+        
+        .content {
+            padding: 16px;
+        }
+        
+        .order-card {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .order-header {
+            padding: 16px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .order-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .restaurant-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #ff9a9e, #fecfef);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .order-details h3 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .order-meta {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .order-status {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-preparing {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-delivering {
+            background: #cce5ff;
+            color: #004085;
+        }
+        
+        .status-completed {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+        
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .order-items {
+            padding: 16px;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .order-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+        
+        .item-image {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #a8edea, #fed6e3);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+        
+        .item-details {
+            flex: 1;
+        }
+        
+        .item-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .item-desc {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .item-price {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+        
+        .item-quantity {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .item-total {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ff6b6b;
+        }
+        
+        .order-summary {
+            padding: 16px;
+            border-top: 1px solid #f0f0f0;
+            background: #f8f9fa;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .summary-row:last-child {
+            margin-bottom: 0;
+            font-weight: 600;
+            font-size: 16px;
+            color: #ff6b6b;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 8px;
+        }
+        
+        .order-actions {
+            padding: 16px;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        
+        .action-btn {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn.primary {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .action-btn.danger {
+            background: #ff6b6b;
+            color: white;
+            border-color: #ff6b6b;
+        }
+        
+        .action-btn:hover {
+            opacity: 0.8;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        
+        .empty-text {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .empty-desc {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 20px;
+        }
+        
+        .empty-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .delivery-progress {
+            padding: 16px;
+            background: #f8f9fa;
+            margin: 16px 0;
+            border-radius: 8px;
+        }
+        
+        .progress-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #333;
+        }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+        
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+        }
+        
+        .step-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-icon.completed {
+            background: #28a745;
+            color: white;
+        }
+        
+        .step-icon.current {
+            background: #667eea;
+            color: white;
+        }
+        
+        .step-icon.pending {
+            background: #e9ecef;
+            color: #6c757d;
+        }
+        
+        .step-text {
+            font-size: 12px;
+            text-align: center;
+            color: #666;
+        }
+        
+        .progress-line {
+            position: absolute;
+            top: 16px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e9ecef;
+            z-index: 1;
+        }
+        
+        .progress-line-fill {
+            height: 100%;
+            background: #28a745;
+            width: 33%;
+            transition: width 0.3s ease;
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 100;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 12px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-item.active {
+            color: #667eea;
+        }
+        
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+            background: currentColor;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <div class="header">
+        <h1 class="header-title">订单中心</h1>
+    </div>
+    
+    <!-- 订单状态标签 -->
+    <div class="order-tabs">
+        <button class="order-tab active">
+            全部
+        </button>
+        <button class="order-tab">
+            待付款
+            <span class="tab-badge">2</span>
+        </button>
+        <button class="order-tab">
+            制作中
+            <span class="tab-badge">1</span>
+        </button>
+        <button class="order-tab">
+            配送中
+        </button>
+        <button class="order-tab">
+            已完成
+        </button>
+    </div>
+    
+    <div class="content">
+        <!-- 配送中的订单 -->
+        <div class="order-card">
+            <div class="order-header">
+                <div class="order-info">
+                    <div class="restaurant-logo">川</div>
+                    <div class="order-details">
+                        <h3>川味小厨</h3>
+                        <div class="order-meta">订单号：202401150001</div>
+                    </div>
+                </div>
+                <div class="order-status status-delivering">配送中</div>
+            </div>
+            
+            <div class="delivery-progress">
+                <div class="progress-title">📍 配送进度</div>
+                <div class="progress-steps">
+                    <div class="progress-line">
+                        <div class="progress-line-fill"></div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-icon completed">✓</div>
+                        <div class="step-text">订单确认</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-icon current">🍳</div>
+                        <div class="step-text">制作中</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-icon pending">🚚</div>
+                        <div class="step-text">配送中</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-icon pending">✓</div>
+                        <div class="step-text">已送达</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="order-items">
+                <div class="order-item">
+                    <div class="item-info">
+                        <div class="item-image">宫保鸡丁</div>
+                        <div class="item-details">
+                            <div class="item-name">宫保鸡丁</div>
+                            <div class="item-desc">经典川菜，鸡肉嫩滑</div>
+                        </div>
+                    </div>
+                    <div class="item-price">
+                        <div class="item-quantity">x1</div>
+                        <div class="item-total">¥28</div>
+                    </div>
+                </div>
+                
+                <div class="order-item">
+                    <div class="item-info">
+                        <div class="item-image">蛋炒饭</div>
+                        <div class="item-details">
+                            <div class="item-name">扬州炒饭</div>
+                            <div class="item-desc">粒粒分明，配菜丰富</div>
+                        </div>
+                    </div>
+                    <div class="item-price">
+                        <div class="item-quantity">x1</div>
+                        <div class="item-total">¥18</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span>商品金额</span>
+                    <span>¥46</span>
+                </div>
+                <div class="summary-row">
+                    <span>配送费</span>
+                    <span>¥3</span>
+                </div>
+                <div class="summary-row">
+                    <span>优惠券</span>
+                    <span>-¥5</span>
+                </div>
+                <div class="summary-row">
+                    <span>实付金额</span>
+                    <span>¥44</span>
+                </div>
+            </div>
+            
+            <div class="order-actions">
+                <button class="action-btn">联系商家</button>
+                <button class="action-btn primary">查看详情</button>
+            </div>
+        </div>
+        
+        <!-- 待付款订单 -->
+        <div class="order-card">
+            <div class="order-header">
+                <div class="order-info">
+                    <div class="restaurant-logo">粤</div>
+                    <div class="order-details">
+                        <h3>港式茶餐厅</h3>
+                        <div class="order-meta">订单号：202401150002</div>
+                    </div>
+                </div>
+                <div class="order-status status-pending">待付款</div>
+            </div>
+            
+            <div class="order-items">
+                <div class="order-item">
+                    <div class="item-info">
+                        <div class="item-image">小笼包</div>
+                        <div class="item-details">
+                            <div class="item-name">蟹黄小笼包</div>
+                            <div class="item-desc">皮薄汁多，蟹黄鲜美</div>
+                        </div>
+                    </div>
+                    <div class="item-price">
+                        <div class="item-quantity">x1</div>
+                        <div class="item-total">¥32</div>
+                    </div>
+                </div>
+                
+                <div class="order-item">
+                    <div class="item-info">
+                        <div class="item-image">烧卖</div>
+                        <div class="item-details">
+                            <div class="item-name">糯米烧卖</div>
+                            <div class="item-desc">传统港式点心</div>
+                        </div>
+                    </div>
+                    <div class="item-price">
+                        <div class="item-quantity">x1</div>
+                        <div class="item-total">¥26</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span>商品金额</span>
+                    <span>¥58</span>
+                </div>
+                <div class="summary-row">
+                    <span>配送费</span>
+                    <span>¥4</span>
+                </div>
+                <div class="summary-row">
+                    <span>实付金额</span>
+                    <span>¥62</span>
+                </div>
+            </div>
+            
+            <div class="order-actions">
+                <button class="action-btn">取消订单</button>
+                <button class="action-btn primary">立即付款</button>
+            </div>
+        </div>
+        
+        <!-- 已完成订单 -->
+        <div class="order-card">
+            <div class="order-header">
+                <div class="order-info">
+                    <div class="restaurant-logo">湘</div>
+                    <div class="order-details">
+                        <h3>湘味人家</h3>
+                        <div class="order-meta">订单号：202401140001</div>
+                    </div>
+                </div>
+                <div class="order-status status-completed">已完成</div>
+            </div>
+            
+            <div class="order-items">
+                <div class="order-item">
+                    <div class="item-info">
+                        <div class="item-image">剁椒鱼头</div>
+                        <div class="item-details">
+                            <div class="item-name">剁椒鱼头</div>
+                            <div class="item-desc">湘菜经典，鲜辣下饭</div>
+                        </div>
+                    </div>
+                    <div class="item-price">
+                        <div class="item-quantity">x1</div>
+                        <div class="item-total">¥48</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span>实付金额</span>
+                    <span>¥48</span>
+                </div>
+            </div>
+            
+            <div class="order-actions">
+                <button class="action-btn">再来一单</button>
+                <button class="action-btn primary">评价订单</button>
+            </div>
+        </div>
+        
+        <!-- 空状态示例（当某个标签页没有订单时显示） -->
+        <!-- 
+        <div class="empty-state">
+            <div class="empty-icon">📦</div>
+            <div class="empty-text">暂无相关订单</div>
+            <div class="empty-desc">快去点些美食吧</div>
+            <button class="empty-btn">去点餐</button>
+        </div>
+        -->
+    </div>
+    
+    <!-- 底部导航 -->
+    <div class="bottom-nav">
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <span>首页</span>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <span>教程</span>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <span>点餐</span>
+        </a>
+        <a href="#" class="nav-item active">
+            <div class="nav-icon"></div>
+            <span>订单</span>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <span>我的</span>
+        </a>
+    </div>
+</body>
+</html>

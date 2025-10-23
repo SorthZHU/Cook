@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 - 试试做菜</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            padding-bottom: 80px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px 16px 40px;
+            position: relative;
+        }
+        
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .settings-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+        
+        .settings-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #ff9a9e, #fecfef);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .user-info h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+        
+        .user-level {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .level-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        
+        .user-stats {
+            display: flex;
+            gap: 16px;
+            font-size: 14px;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .content {
+            padding: 16px;
+            margin-top: -20px;
+        }
+        
+        .stats-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 16px 8px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .stat-box:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+        
+        .stat-number {
+            font-size: 20px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .menu-section {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .menu-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .menu-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-right: 16px;
+        }
+        
+        .icon-recipes {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .icon-favorites {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .icon-history {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .icon-address {
+            background: #cce5ff;
+            color: #004085;
+        }
+        
+        .icon-coupon {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+        
+        .icon-wallet {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .icon-help {
+            background: #ffeaa7;
+            color: #6c5ce7;
+        }
+        
+        .icon-about {
+            background: #fab1a0;
+            color: #e17055;
+        }
+        
+        .menu-content {
+            flex: 1;
+        }
+        
+        .menu-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .menu-desc {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .menu-arrow {
+            color: #ccc;
+            font-size: 16px;
+        }
+        
+        .menu-badge {
+            background: #ff6b6b;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 10px;
+            margin-right: 8px;
+        }
+        
+        .achievement-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        
+        .achievement-item {
+            text-align: center;
+            padding: 16px 8px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .achievement-item.unlocked {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+        
+        .achievement-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .achievement-name {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .achievement-desc {
+            font-size: 10px;
+            color: #666;
+        }
+        
+        .recent-activity {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        
+        .activity-learn {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .activity-order {
+            background: #cce5ff;
+            color: #004085;
+        }
+        
+        .activity-review {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-text {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        
+        .activity-time {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 100;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 12px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-item.active {
+            color: #667eea;
+        }
+        
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+            background: currentColor;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部用户信息 -->
+    <div class="header">
+        <div class="header-actions">
+            <h1 class="header-title">个人中心</h1>
+            <button class="settings-btn">⚙️</button>
+        </div>
+        
+        <div class="user-profile">
+            <div class="user-avatar">张</div>
+            <div class="user-info">
+                <h2>张小厨</h2>
+                <div class="user-level">
+                    <span class="level-badge">🏆 美食达人</span>
+                </div>
+                <div class="user-stats">
+                    <div class="stat-item">
+                        <span>📚</span>
+                        <span>学会25道菜</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>⭐</span>
+                        <span>获得128个赞</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="content">
+        <!-- 数据统计卡片 -->
+        <div class="stats-card">
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number">25</div>
+                    <div class="stat-label">学会菜谱</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">收藏菜谱</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">完成订单</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">128</div>
+                    <div class="stat-label">获得点赞</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 我的菜谱和收藏 -->
+        <div class="menu-section">
+            <div class="menu-item">
+                <div class="menu-icon icon-recipes">📖</div>
+                <div class="menu-content">
+                    <div class="menu-title">我的菜谱</div>
+                    <div class="menu-desc">查看我学会的所有菜谱</div>
+                </div>
+                <span class="menu-arrow">›</span>
+            </div>
+            
+            <div class="menu-item">
+                <div class="menu-icon icon-favorites">❤️</div>
+                <div class="menu-content">
+                    <div class="menu-title">我的收藏</div>
+                    <div class="menu-desc">收藏的菜谱和教程</div>
+                </div>
+                <span class="menu-arrow">›</span>
+            </div>
+            
+            <div class="menu-item">
+                <div class="menu-icon icon-history">🕒</div>
+                <div class="menu-content">
+                    <div class="menu-title">学习历史</div>
+                    <div class="menu-desc">查看学习记录和进度</div>
+                </div>
+                <span class="menu-arrow">›</span>
+            </div>
+        </div>
+        
+        <!-- 订单和服务 -->
+        <div class="menu-section">
+            <div class="menu-item">
+                <div class="menu-icon icon-address">📍</div>
+                <div class="menu-content">
+                    <div class="menu-title">收货地址</div>
+                    <div class="menu-desc">管理我的收货地址</div>
+                </div>
+                <span class="menu-arrow">›</span>
+            </div>
+            
+            <div class="menu-item">
+                <div class="menu-icon icon-coupon">🎫</div>
+                <div class="menu-content">
+                    <div class="menu-title">优惠券</div>
+                    <div class="menu-desc">查看可用优惠券</div>
+                </div>
+                <span class="menu-badge">3</span>
+                <span class="menu-arrow">›</span>
+            </div>
+            
+            <div class="menu-item">
+                <div class="menu-icon icon-wallet">💰</div>
+                <div class="menu-content">
+                    <div class="menu-title">我的钱包</div>
+                    <div class="menu-desc">余额和积分管理</div>
+                </div>
+                <span class="menu-arrow">›</span>
+            </div>
+        </div>
+        
+        <!-- 成就系统 -->
+        <div class="achievement-section">
+            <h2 class="section-title">🏆 我的成就</h2>
+            <div class="achievement-grid">
+                <div class="achievement-item unlocked">
+                    <div class="achievement-icon">🍳</div>
+                    <div class="achievement-name">初级厨师</div>
+                    <div class="achievement-desc">学会10道菜</div>
+                </div>
+                
+                <div class="achievement-item unlocked">
+                    <div class="achievement-icon">⭐</div>
+                    <div class="achievement-name">人气新星</div>
+                    <div class="achievement-desc">获得100个赞</div>
+                </div>
+                
+                <div class="achievement-item">
+                    <div class="achievement-icon">👨‍🍳</div>
+                    <div class="achievement-name">美食大师</div>
+                    <div class="achievement-desc">学会50道菜</div>
+                </div>
+                
+                <div class="achievement-item">
+                    <div class="achievement-icon">🔥</div>
+                    <div class="achievement-name">连续学习</div>
+                    <div class="achievement-desc">连续7天学习</div>
+                </div>
+                
+                <div class="achievement-item">
+                    <div class="achievement-icon">💎</div>
+                    <div class="achievement-name">完美评价</div>
+                    <div class="achievement-desc">获得10个五星</div>
+                </div>
+                
+                <div class="achievement-item">
+                    <div class="achievement-icon">🎯</div>
+                    <div class="achievement-name">挑战达人</div>
+                    <div class="achievement-desc">完成困难菜谱</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 最近活动 -->
+        <div class="recent-activity">
+            <h2 class="section-title">📈 最近活动</h2>
+            
+            <div class="activity-item">
+                <div class="activity-icon activity-learn">📚</div>
+                <div class="activity-content">
+                    <div class="activity-text">学会了「红烧肉」</div>
+                    <div class="activity-time">2小时前</div>
+                </div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon activity-order">🛒</div>
+                <div class="activity-content">
+                    <div class="activity-text">完成了川味小厨的订单</div>
+                    <div class="activity-time">1天前</div>
+                </div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon activity-review">⭐</div>
+                <div class="activity-content">
+                    <div class="activity-text">评价了「宫保鸡丁」教程</div>
+                    <div class="activity-time">2天前</div>
+                </div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon activity-learn">📚</div>
+                <div class="activity-content">
+                    <div class="activity-text">收藏了「麻婆豆腐」教程</div>
+                    <div class="activity-time">3天前</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 帮助和设置 -->
+        <div class="menu-section">
+            <div class="menu-item">
+                <div class="menu-icon icon-help">❓</div>
+                <div class="menu-content">
+                    <div class="menu-title">帮助中心</div>
+                    <div class="menu-desc">常见问题和使用指南</div>
+                </div>
+                <span class="menu-arrow">›</span>
+            </div>
+            
+            <div class="menu-item">
+                <div class="menu-icon icon-about">ℹ️</div>
+                <div class="menu-content">
+                    <div class="menu-title">关于我们</div>
+                    <div class="menu-desc">版本信息和联系方式</div>
+                </div>
+                <span class="menu-arrow">›</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部导航 -->
+    <div class="bottom-nav">
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <span>首页</span>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <span>教程</span>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <span>点餐</span>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <span>订单</span>
+        </a>
+        <a href="#" class="nav-item active">
+            <div class="nav-icon"></div>
+            <span>我的</span>
+        </a>
+    </div>
+</body>
+</html>
