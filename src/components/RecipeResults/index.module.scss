@@ -1,0 +1,225 @@
+// 菜品结果容器
+.container {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+// 头部区域
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #212529;
+}
+
+.count {
+  font-size: 16px;
+  color: #6c757d;
+  background: #f8f9fa;
+  padding: 6px 12px;
+  border-radius: 12px;
+}
+
+// 空状态
+.emptyState {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.emptyEmoji {
+  font-size: 64px;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.emptyTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.emptyDesc {
+  font-size: 16px;
+  color: #6c757d;
+  line-height: 1.5;
+  display: block;
+}
+
+// 菜品列表
+.recipeList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.recipeCard {
+  background: #f8f9fa;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// 菜品头部
+.recipeHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.recipeEmoji {
+  font-size: 48px;
+  flex-shrink: 0;
+}
+
+.recipeInfo {
+  flex: 1;
+}
+
+.recipeName {
+  font-size: 20px;
+  font-weight: bold;
+  color: #212529;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.recipeDesc {
+  font-size: 16px;
+  color: #6c757d;
+  line-height: 1.4;
+  display: block;
+}
+
+// 菜品详细信息
+.recipeDetails {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: white;
+  border-radius: 12px;
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.detailLabel {
+  font-size: 16px;
+  color: #495057;
+  font-weight: 500;
+}
+
+.detailValue {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+// 食材区域
+.ingredientsSection {
+  margin-bottom: 20px;
+}
+
+.ingredientsTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.ingredientsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ingredientTag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1px solid;
+  transition: all 0.3s ease;
+
+  &.selected {
+    background: #e8f5e8;
+    border-color: #28a745;
+    color: #155724;
+  }
+
+  &.missing {
+    background: #fff3cd;
+    border-color: #ffc107;
+    color: #856404;
+  }
+}
+
+.ingredientTagText {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.checkMark {
+  font-size: 12px;
+  color: #28a745;
+  font-weight: bold;
+}
+
+// 操作按钮
+.actionButtons {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.actionButton {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 12px;
+  text-align: center;
+  background: white;
+  border: 1px solid #dee2e6;
+  transition: all 0.3s ease;
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &.primaryButton {
+    background: #007bff;
+    border-color: #007bff;
+  }
+}
+
+.actionButtonText {
+  font-size: 16px;
+  font-weight: 600;
+  color: #495057;
+
+  &.primaryButtonText {
+    color: white;
+  }
+}

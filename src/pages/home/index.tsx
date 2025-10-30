@@ -1,17 +1,43 @@
 import { View, Text } from '@tarojs/components'
 import { useLoad } from '@tarojs/taro'
+import { useState } from 'react'
+import IngredientSelector from '../../components/IngredientSelector'
+import RecipeResults from '../../components/RecipeResults'
+import { Recipe, searchRecipesByIngredients } from '../../data/ingredients'
 import styles from './index.module.scss'
 
 export default function Home() {
+  const [selectedIngredients, setSelectedIngredients] = useState<string[]>([])
+  const [searchResults, setSearchResults] = useState<Recipe[]>([])
+
   useLoad(() => {
     console.log('Home page loaded.')
   })
+
+  // 处理菜品搜索结果变化
+  const handleRecipesChange = (recipes: Recipe[], ingredients: string[]) => {
+    setSearchResults(recipes)
+    setSelectedIngredients(ingredients)
+  }
 
   return (
     <View className={styles['container']}>
       <View className={styles['banner']}>
         <Text className={styles['banner-title']}>🍳 试试做菜</Text>
         <Text className={styles['banner-subtitle']}>学做菜，享美食</Text>
+      </View>
+
+      {/* 食材选择器 */}
+      <View className={styles['ingredient-section']}>
+        <IngredientSelector onRecipesChange={handleRecipesChange} />
+      </View>
+
+      {/* 菜品搜索结果 */}
+      <View className={styles['results-section']}>
+        <RecipeResults 
+          recipes={searchResults} 
+          selectedIngredients={selectedIngredients} 
+        />
       </View>
 
       <View className={styles['feature-grid']}>
