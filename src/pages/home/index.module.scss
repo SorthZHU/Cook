@@ -1,0 +1,106 @@
+// 容器样式
+.container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+// 首页样式
+.banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  padding: 30px 20px;
+  text-align: center;
+  margin-bottom: 24px;
+  color: white;
+}
+
+.banner-title {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.banner-subtitle {
+  font-size: 20px;
+  opacity: 0.9;
+  display: block;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.feature-item {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.feature-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.feature-text {
+  font-size: 18px;
+  color: #495057;
+  font-weight: 500;
+  display: block;
+}
+
+// 通用区块样式
+.section {
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #212529;
+  margin-bottom: 16px;
+  display: block;
+}
+
+// 菜谱列表
+.recipe-list {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.recipe-item {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  min-width: 120px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.recipe-emoji {
+  font-size: 32px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.recipe-name {
+  font-size: 14px;
+  color: #495057;
+  font-weight: 500;
+  display: block;
+}

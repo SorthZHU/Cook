@@ -1,0 +1,30 @@
+/* 全局字体大小设置 */
+page {
+  font-size: 32px; /* 默认字体大小，适合移动端 */
+  line-height: 1.5;
+}
+
+/* H5 端字体大小调整 */
+html {
+  font-size: 16px; /* H5 端基础字体大小 */
+}
+
+body {
+  font-size: 16px;
+  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* 通用字体大小类 */
+.text-xs { font-size: 24px; }   /* 小字体 */
+.text-sm { font-size: 28px; }   /* 较小字体 */
+.text-base { font-size: 32px; } /* 基础字体 */
+.text-lg { font-size: 36px; }   /* 较大字体 */
+.text-xl { font-size: 40px; }   /* 大字体 */
+.text-2xl { font-size: 48px; }  /* 超大字体 */
+
+/* 标题字体大小 */
+.title-sm { font-size: 32px; font-weight: 600; }
+.title-md { font-size: 36px; font-weight: 600; }
+.title-lg { font-size: 40px; font-weight: 600; }
+.title-xl { font-size: 48px; font-weight: 600; }

@@ -1,0 +1,102 @@
+// 容器样式
+.container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+// 教程页面样式
+.search-bar {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-placeholder {
+  color: #6c757d;
+  font-size: 20px;
+  display: block;
+}
+
+.category-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.category-tab {
+  background: white;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 18px;
+  color: #6c757d;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.category-tab.active {
+  background: #007bff;
+  color: white;
+}
+
+// 通用区块样式
+.section {
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #212529;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.tutorial-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tutorial-item {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.tutorial-emoji {
+  font-size: 40px;
+  flex-shrink: 0;
+}
+
+.tutorial-info {
+  flex: 1;
+}
+
+.tutorial-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.tutorial-meta {
+  font-size: 12px;
+  color: #6c757d;
+  display: block;
+}

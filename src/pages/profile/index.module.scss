@@ -1,0 +1,134 @@
+// 容器样式
+.container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+// 通用区块样式
+.section {
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #212529;
+  margin-bottom: 16px;
+  display: block;
+}
+
+// 个人中心样式
+.profile-header {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.avatar-text {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.username {
+  font-size: 22px;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.user-level {
+  font-size: 18px;
+  color: #6c757d;
+  display: block;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stat-item {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-number {
+  font-size: 24px;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #6c757d;
+  display: block;
+}
+
+.menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: #e9ecef;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.menu-item {
+  background: white;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: background-color 0.3s ease;
+
+  &:active {
+    background-color: #f8f9fa;
+  }
+}
+
+.menu-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.menu-text {
+  flex: 1;
+  font-size: 16px;
+  color: #212529;
+}
+
+.menu-arrow {
+  font-size: 18px;
+  color: #6c757d;
+  flex-shrink: 0;
+}

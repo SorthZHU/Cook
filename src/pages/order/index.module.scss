@@ -1,0 +1,131 @@
+// 容器样式
+.container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+// 点餐页面样式
+.location-bar {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.location-text {
+  font-size: 18px;
+  color: #495057;
+  display: block;
+}
+
+.change-location {
+  font-size: 18px;
+  color: #007bff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #f8f9fa;
+}
+
+// 通用区块样式
+.section {
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #212529;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.restaurant-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.restaurant-item {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.restaurant-emoji {
+  font-size: 40px;
+  flex-shrink: 0;
+}
+
+.restaurant-info {
+  flex: 1;
+}
+
+.restaurant-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.restaurant-meta {
+  font-size: 12px;
+  color: #6c757d;
+  margin-bottom: 4px;
+  display: block;
+}
+
+// 菜品网格样式
+.dish-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.dish-item {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.dish-emoji {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.dish-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.dish-price {
+  font-size: 16px;
+  font-weight: bold;
+  color: #dc3545;
+  display: block;
+}
