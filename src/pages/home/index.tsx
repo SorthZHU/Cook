@@ -3,6 +3,7 @@ import { useLoad } from '@tarojs/taro'
 import { useState } from 'react'
 import IngredientSelector from '../../components/IngredientSelector'
 import RecipeResults from '../../components/RecipeResults'
+import ApiTest from '../../components/ApiTest'
 import { Recipe, searchRecipesByIngredients } from '../../data/ingredients'
 import styles from './index.module.scss'
 
@@ -38,6 +39,11 @@ export default function Home() {
           recipes={searchResults} 
           selectedIngredients={selectedIngredients} 
         />
+      </View>
+
+      {/* API测试组件 */}
+      <View className={styles['api-test-section']}>
+        <ApiTest />
       </View>
 
       <View className={styles['feature-grid']}>
