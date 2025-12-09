@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text } from '@tarojs/components';
 import { mockIngredients, searchRecipesByIngredients, Recipe } from '../../data/ingredients';
 import styles from './index.module.scss';
+import ApiService from "@/services/apiService";
 
 interface IngredientSelectorProps {
   onRecipesChange: (recipes: Recipe[], selectedIngredients: string[]) => void;
@@ -38,6 +39,14 @@ const IngredientSelector: React.FC<IngredientSelectorProps> = ({ onRecipesChange
     return mockIngredients.find(category => category.id === activeCategory)?.ingredients || [];
   };
 
+  useEffect(() => {
+    ApiService.getAllFoods().then(res => {
+      console.log(res);
+    }).catch(err => {
+      console.log(err);
+    });
+  }, []);
+
   return (
     <View className={styles.container}>
       {/* 标题和清空按钮 */}
@@ -69,9 +78,8 @@ const IngredientSelector: React.FC<IngredientSelectorProps> = ({ onRecipesChange
         {getCurrentCategoryIngredients().map(ingredient => (
           <View
             key={ingredient.id}
-            className={`${styles.ingredientItem} ${
-              selectedIngredients.includes(ingredient.id) ? styles.selected : ''
-            }`}
+            className={`${styles.ingredientItem} ${selectedIngredients.includes(ingredient.id) ? styles.selected : ''
+              }`}
             onClick={() => toggleIngredient(ingredient.id)}
           >
             <Text className={styles.ingredientEmoji}>{ingredient.emoji}</Text>

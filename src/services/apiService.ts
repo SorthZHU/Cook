@@ -40,13 +40,12 @@ export class ApiService {
   }
 
   // 获取菜谱列表（示例接口）
-  static async getRecipes(params?: {
-    ingredients?: string[]
-    difficulty?: string
+  static async getAllFoods(params?: {
+    page?: number
     limit?: number
   }): Promise<RecipeData[]> {
     try {
-      const response = await api.get('/api/recipes', { params })
+      const response = await api.get('/api/foods', { params })
       return response.data.data || []
     } catch (error) {
       console.error('获取菜谱失败:', error)

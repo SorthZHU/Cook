@@ -35,16 +35,16 @@ export default function Home() {
 
       {/* 菜品搜索结果 */}
       <View className={styles['results-section']}>
-        <RecipeResults 
-          recipes={searchResults} 
-          selectedIngredients={selectedIngredients} 
+        <RecipeResults
+          recipes={searchResults}
+          selectedIngredients={selectedIngredients}
         />
       </View>
 
       {/* API测试组件 */}
-      <View className={styles['api-test-section']}>
+      {/* <View className={styles['api-test-section']}>
         <ApiTest />
-      </View>
+      </View> */}
 
       <View className={styles['feature-grid']}>
         <View className={styles['feature-item']}>

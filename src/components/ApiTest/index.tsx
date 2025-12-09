@@ -44,7 +44,7 @@ export default function ApiTest({ className }: ApiTestProps) {
       </View>
 
       <View className={styles.testSection}>
-        <Button 
+        <Button
           className={styles.testButton}
           onClick={testHealthApi}
           loading={loading}
