@@ -6,3 +6,13 @@ node_modules/
 .DS_Store
 .swc
 *.local
+
+# 环境变量文件（避免提交包含IP/密钥的本地环境配置）
+.env
+.env.local
+.env.*.local
+.env.*
+
+# 本地开发配置（包含代理IP等信息）
+config/*.local.ts
+config/dev.local.ts
