@@ -3,48 +3,33 @@ import { View, Text } from '@tarojs/components';
 import { mockIngredients, searchRecipesByIngredients, Recipe } from '../../data/ingredients';
 import styles from './index.module.scss';
 import ApiService from "@/services/apiService";
+import { observer, useLocalObservable } from "mobx-react-lite";
+import IngredientSelectorStore, { CategoryId } from './store';
+import { CATTEGORIES } from "@/constant/category";
+import { getEmojiById } from "@/utils/emoji";
 
 interface IngredientSelectorProps {
   onRecipesChange: (recipes: Recipe[], selectedIngredients: string[]) => void;
 }
 
 const IngredientSelector: React.FC<IngredientSelectorProps> = ({ onRecipesChange }) => {
-  const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
-  const [activeCategory, setActiveCategory] = useState<string>('vegetables');
+
+  const selectStore = useLocalObservable(() => new IngredientSelectorStore());
 
   // 当选中的食材发生变化时，查询相关菜品
   useEffect(() => {
-    const recipes = searchRecipesByIngredients(selectedIngredients);
-    onRecipesChange(recipes, selectedIngredients);
-  }, [selectedIngredients]);
+    const recipes = searchRecipesByIngredients(selectStore.selectedIngredients);
+    onRecipesChange(recipes, selectStore.selectedIngredients);
+  }, [selectStore.selectedIngredients]);
 
-  // 切换食材选中状态
-  const toggleIngredient = (ingredientId: string) => {
-    setSelectedIngredients(prev => {
-      if (prev.includes(ingredientId)) {
-        return prev.filter(id => id !== ingredientId);
-      } else {
-        return [...prev, ingredientId];
-      }
-    });
-  };
 
   // 清空所有选择
   const clearSelection = () => {
-    setSelectedIngredients([]);
-  };
-
-  // 获取当前活跃分类的食材
-  const getCurrentCategoryIngredients = () => {
-    return mockIngredients.find(category => category.id === activeCategory)?.ingredients || [];
+    selectStore.setSelectedIngredients([]);
   };
 
   useEffect(() => {
-    ApiService.getAllFoods().then(res => {
-      console.log(res);
-    }).catch(err => {
-      console.log(err);
-    });
+    selectStore.getFoodList();
   }, []);
 
   return (
@@ -52,39 +37,39 @@ const IngredientSelector: React.FC<IngredientSelectorProps> = ({ onRecipesChange
       {/* 标题和清空按钮 */}
       <View className={styles.header}>
         <Text className={styles.title}>选择食材组合</Text>
-        {selectedIngredients.length > 0 && (
+        {selectStore.selectedIngredients.length > 0 && (
           <Text className={styles.clearBtn} onClick={clearSelection}>
-            清空选择 ({selectedIngredients.length})
+            清空选择 ({selectStore.selectedIngredients.length})
           </Text>
         )}
       </View>
 
       {/* 分类标签 */}
       <View className={styles.categoryTabs}>
-        {mockIngredients.map(category => (
+        {CATTEGORIES.map(category => (
           <View
             key={category.id}
-            className={`${styles.categoryTab} ${activeCategory === category.id ? styles.active : ''}`}
-            onClick={() => setActiveCategory(category.id)}
+            className={`${styles.categoryTab} ${selectStore.activeCategory === category.id ? styles.active : ''}`}
+            onClick={() => selectStore.setActiveCategory(category.id as CategoryId)}
           >
             <Text className={styles.categoryEmoji}>{category.emoji}</Text>
-            <Text className={styles.categoryName}>{category.name}</Text>
+            <Text className={styles.categoryName}>{category.label}</Text>
           </View>
         ))}
       </View>
 
       {/* 食材选择区域 */}
       <View className={styles.ingredientsGrid}>
-        {getCurrentCategoryIngredients().map(ingredient => (
+        {selectStore.getCurrentCategoryIngredients.map(ingredient => (
           <View
-            key={ingredient.id}
-            className={`${styles.ingredientItem} ${selectedIngredients.includes(ingredient.id) ? styles.selected : ''
+            key={ingredient.foodCode}
+            className={`${styles.ingredientItem} ${selectStore.selectedIngredients.includes(ingredient.foodCode) ? styles.selected : ''
               }`}
-            onClick={() => toggleIngredient(ingredient.id)}
+            onClick={() => selectStore.toggleIngredient(ingredient.foodCode)}
           >
-            <Text className={styles.ingredientEmoji}>{ingredient.emoji}</Text>
-            <Text className={styles.ingredientName}>{ingredient.name}</Text>
-            {selectedIngredients.includes(ingredient.id) && (
+            <Text className={styles.ingredientEmoji}>{getEmojiById(ingredient.foodCode)}</Text>
+            <Text className={styles.ingredientName}>{ingredient.foodName}</Text>
+            {selectStore.selectedIngredients.includes(ingredient.foodCode) && (
               <View className={styles.selectedBadge}>
                 <Text className={styles.selectedText}>✓</Text>
               </View>
@@ -94,11 +79,11 @@ const IngredientSelector: React.FC<IngredientSelectorProps> = ({ onRecipesChange
       </View>
 
       {/* 已选择的食材预览 */}
-      {selectedIngredients.length > 0 && (
+      {selectStore.selectedIngredients.length > 0 && (
         <View className={styles.selectedPreview}>
           <Text className={styles.previewTitle}>已选择的食材：</Text>
           <View className={styles.selectedList}>
-            {selectedIngredients.map(ingredientId => {
+            {selectStore.selectedIngredients.map(ingredientId => {
               const ingredient = mockIngredients
                 .flatMap(cat => cat.ingredients)
                 .find(ing => ing.id === ingredientId);
@@ -117,4 +102,4 @@ const IngredientSelector: React.FC<IngredientSelectorProps> = ({ onRecipesChange
   );
 };
 
-export default IngredientSelector;
+export default observer(IngredientSelector);

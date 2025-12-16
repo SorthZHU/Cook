@@ -1,10 +1,12 @@
 export const CATEGORY_MAP = {
   VEGETABLES: 'vegetables',
-  MEATS: 'meats',
+  MEAT: 'meat',
   COOKWARE: 'cookware',
 }
-
-export const cattegories = [
+/**
+ * 食材分类
+ */
+export const CATTEGORIES = [
   {
     id: CATEGORY_MAP.VEGETABLES,
     label: '蔬菜',
@@ -12,10 +14,10 @@ export const cattegories = [
     value: CATEGORY_MAP.VEGETABLES,
   },
   {
-    id: CATEGORY_MAP.MEATS,
+    id: CATEGORY_MAP.MEAT,
     label: '肉类',
     emoji: '🥩',
-    value: CATEGORY_MAP.MEATS,
+    value: CATEGORY_MAP.MEAT,
   },
   {
     id: CATEGORY_MAP.COOKWARE,

@@ -1,4 +1,5 @@
 import { api } from '../utils/api'
+import { ApiServiceResponse } from "./types"
 
 // 定义API响应类型
 export interface ApiResponse<T = any> {
@@ -39,14 +40,15 @@ export class ApiService {
     }
   }
 
-  // 获取菜谱列表（示例接口）
+  // 获取菜谱列表
   static async getAllFoods(params?: {
     page?: number
     limit?: number
-  }): Promise<RecipeData[]> {
+    category?: string
+  }): Promise<ApiServiceResponse.getAllFoodsResponse> {
     try {
       const response = await api.get('/api/foods', { params })
-      return response.data.data || []
+      return response.data || []
     } catch (error) {
       console.error('获取菜谱失败:', error)
       throw new Error('获取菜谱数据失败')
