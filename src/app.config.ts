@@ -1,3 +1,5 @@
+const iconExt = process.env.TARO_ENV === 'weapp' ? 'png' : 'svg'
+
 export default defineAppConfig({
   pages: [
     'pages/home/index',
@@ -20,26 +22,26 @@ export default defineAppConfig({
       {
         pagePath: 'pages/home/index',
         text: '首页',
-        iconPath: 'assets/icons/home.svg',
-        selectedIconPath: 'assets/icons/home-active.svg'
+        iconPath: 'assets/icons/home.' + iconExt,
+        selectedIconPath: 'assets/icons/home-active.' + iconExt
       },
       {
         pagePath: 'pages/tutorial/index',
         text: '教程',
-        iconPath: 'assets/icons/tutorial.svg',
-        selectedIconPath: 'assets/icons/tutorial-active.svg'
+        iconPath: 'assets/icons/tutorial.' + iconExt,
+        selectedIconPath: 'assets/icons/tutorial-active.' + iconExt
       },
       {
         pagePath: 'pages/order/index',
         text: '点餐',
-        iconPath: 'assets/icons/order.svg',
-        selectedIconPath: 'assets/icons/order-active.svg'
+        iconPath: 'assets/icons/order.' + iconExt,
+        selectedIconPath: 'assets/icons/order-active.' + iconExt
       },
       {
         pagePath: 'pages/profile/index',
         text: '我的',
-        iconPath: 'assets/icons/profile.svg',
-        selectedIconPath: 'assets/icons/profile-active.svg'
+        iconPath: 'assets/icons/profile.' + iconExt,
+        selectedIconPath: 'assets/icons/profile-active.' + iconExt
       }
     ]
   }
