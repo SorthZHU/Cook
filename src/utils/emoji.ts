@@ -8,6 +8,7 @@ export const emojiMap: Record<string, string> = {
   tomato: '🍅',
   onion: '🧅',
   carrot: '🥕',
+  whiteRadish: '🥕',
   cabbage: '🥬',
   broccoli: '🥦',
   eggplant: '🍆',

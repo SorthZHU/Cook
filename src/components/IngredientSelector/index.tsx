@@ -53,7 +53,7 @@ const IngredientSelector: React.FC<IngredientSelectorProps> = ({ onRecipesChange
             onClick={() => selectStore.setActiveCategory(category.id as CategoryId)}
           >
             <Text className={styles.categoryEmoji}>{category.emoji}</Text>
-            <Text className={styles.categoryName}>{category.label}</Text>
+            <Text className={styles.categoryName}>{category.customName}</Text>
           </View>
         ))}
       </View>

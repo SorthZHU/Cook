@@ -24,8 +24,7 @@ export default function Home() {
   return (
     <View className={styles['container']}>
       <View className={styles['banner']}>
-        <Text className={styles['banner-title']}>🍳 试试做菜</Text>
-        <Text className={styles['banner-subtitle']}>学做菜，享美食</Text>
+        <Text className={styles['banner-title']}>🍳 很好，今天想要挑战点什么</Text>
       </View>
 
       {/* 食材选择器 */}
