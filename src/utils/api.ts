@@ -6,7 +6,7 @@ const env = (typeof process !== 'undefined' && (process as any).env) ? (process 
 const isDev = env.NODE_ENV !== 'production'
 const API_BASE_URL = isDev
   ? ''
-  : (env.API_BASE_URL || 'http://47.114.86.249:3000')
+  : (env.API_BASE_URL || 'http://www.feizaiupup.xyz/')
 
 // 参数序列化：将数组序列化为逗号分隔，避免qs依赖
 const serializeParams = (params?: Record<string, any>): string => {
