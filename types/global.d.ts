@@ -10,6 +10,7 @@ declare module '*.less';
 declare module '*.scss';
 declare module '*.sass';
 declare module '*.styl';
+declare module 'vconsole';
 
 declare namespace NodeJS {
   interface ProcessEnv {
@@ -25,5 +26,4 @@ declare namespace NodeJS {
     TARO_APP_ID: string
   }
 }
-
 

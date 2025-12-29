@@ -1,10 +1,12 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig, AxiosAdapter } from 'axios'
+import Taro from '@tarojs/taro'
 import type { ServerResponse, FoodsQueryParams, FoodItem } from '@/request/api.types'
 
 // API基础配置：优先使用环境变量；开发环境走相对路径，配合 devServer 代理以避免 CORS
 const env = (typeof process !== 'undefined' && (process as any).env) ? (process as any).env : {}
 const isDev = env.NODE_ENV !== 'production'
-const API_BASE_URL = isDev
+const isWeapp = (Taro.getEnv && Taro.getEnv() === (Taro as any).ENV_TYPE?.WEAPP) || (process as any)?.env?.TARO_ENV === 'weapp'
+const API_BASE_URL = isDev && !isWeapp
   ? ''
   : (env.API_BASE_URL || 'http://www.feizaiupup.xyz/')
 
@@ -39,11 +41,44 @@ const apiClient: AxiosInstance = axios.create({
   },
 })
 
+if (isWeapp) {
+  const adapter: AxiosAdapter = async (config) => {
+    let url = config.url || ''
+    if (config.baseURL) {
+      url = config.baseURL.replace(/\/$/, '') + '/' + url.replace(/^\//, '')
+    }
+    if (config.params) {
+      const qs = serializeParams(config.params as any)
+      if (qs) url += (url.includes('?') ? '&' : '?') + qs
+    }
+    const headersObj = (typeof (config.headers as any)?.toJSON === 'function')
+      ? (config.headers as any).toJSON()
+      : (config.headers as any) || {}
+    const res = await Taro.request({
+      url,
+      method: (config.method || 'GET').toUpperCase() as any,
+      data: config.data,
+      header: headersObj,
+      timeout: config.timeout,
+    })
+    const axiosRes: AxiosResponse = {
+      data: res.data as any,
+      status: res.statusCode as number,
+      statusText: res.errMsg || '',
+      headers: res.header as any,
+      config,
+      request: {} as any,
+    }
+    return axiosRes
+  }
+  apiClient.defaults.adapter = adapter
+}
+
 // 请求拦截器
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     // 可在此添加鉴权信息（示例：从localStorage读取token）
-    const token = typeof window !== 'undefined' ? window.localStorage.getItem('token') : undefined
+    const token = typeof window !== 'undefined' ? window?.localStorage?.getItem('token') : undefined
     if (token) {
       // 兼容 AxiosHeaders 实例与普通对象的写法，避免直接整体赋值导致类型不匹配
       const headers: any = config.headers || {}

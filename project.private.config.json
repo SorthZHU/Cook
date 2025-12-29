@@ -3,6 +3,6 @@
   "projectname": "tryToCook",
   "setting": {
     "compileHotReLoad": true,
-    "es6": true
+    "urlCheck": false
   }
 }
