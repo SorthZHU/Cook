@@ -10,10 +10,15 @@ import ApiService from "@/services/apiService"
 export type CategoryId = 'vegetables' | 'meat' | 'cookware'
 
 export interface IngredientSelectorSnapshot {
+  /** 已选食材ID列表（使用食材唯一ID） */
   selectedIngredients: string[]
+  /** 当前活跃的分类标识 */
   activeCategory: CategoryId
+  /** 根据已选食材计算得到的菜谱列表 */
   recipes: Recipe[]
+  /** 全局加载状态（数据请求中） */
   loading: boolean
+  /** 错误信息（可选） */
   error?: string
 }
 
@@ -22,8 +27,9 @@ export class IngredientSelectorStore {
   activeCategory: CategoryId = CATEGORY_MAP.VEGETABLES as CategoryId
   recipes: Recipe[] = []
   loading = false
+  /** 错误信息（可选） */
   error?: string
-
+  /** 所有食材数据列表 */
   foodDataList: ApiServiceResponse.getAllFoodsResponse['body'] = [];
 
   constructor() {
@@ -44,12 +50,17 @@ export class IngredientSelectorStore {
 
 
 
-  // 获取当前活跃分类的食材
+  /**
+   * 获取当前活跃分类的食材
+   */
   @computed get getCurrentCategoryIngredients() {
     return this.foodDataList.filter(category => category.category === this.activeCategory) || [];
   };
 
-  // 切换食材选中状态
+  /**
+   * 切换食材选中状态
+   * @param ingredientId 食材ID
+   */
   toggleIngredient(ingredientId: string) {
     if (this.selectedIngredients.includes(ingredientId)) {
       this.selectedIngredients = this.selectedIngredients.filter(id => id !== ingredientId);
@@ -58,7 +69,9 @@ export class IngredientSelectorStore {
     }
   };
 
-  // 获取所有的食材ID列表
+  /**
+  * 获取所有的食材ID列表 
+  */
   getFoodList = () => {
     this.loading = true
     ApiService.getAllFoods({ page: 1, limit: 200 }).then(res => {
@@ -70,6 +83,9 @@ export class IngredientSelectorStore {
     })
   }
 
+  /**
+   * 清空所有数据
+   */
   clearAll = () => {
     this.selectedIngredients = []
     this.recipes = []

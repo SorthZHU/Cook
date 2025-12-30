@@ -84,13 +84,12 @@ const IngredientSelector: React.FC<IngredientSelectorProps> = ({ onRecipesChange
           <Text className={styles.previewTitle}>已选择的食材：</Text>
           <View className={styles.selectedList}>
             {selectStore.selectedIngredients.map(ingredientId => {
-              const ingredient = mockIngredients
-                .flatMap(cat => cat.ingredients)
-                .find(ing => ing.id === ingredientId);
+              const ingredient = selectStore.getCurrentCategoryIngredients
+                .find(ing => ing.foodCode === ingredientId);
               return ingredient ? (
                 <View key={ingredientId} className={styles.selectedTag}>
                   <Text className={styles.selectedTagText}>
-                    {ingredient.emoji} {ingredient.name}
+                    {getEmojiById(ingredient.foodCode)} {ingredient.foodName}
                   </Text>
                 </View>
               ) : null;
