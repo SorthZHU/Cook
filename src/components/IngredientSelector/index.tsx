@@ -37,11 +37,17 @@ const IngredientSelector: React.FC<IngredientSelectorProps> = ({ onRecipesChange
       {/* 标题和清空按钮 */}
       <View className={styles.header}>
         <Text className={styles.title}>选择食材组合</Text>
-        {selectStore.selectedIngredients.length > 0 && (
-          <Text className={styles.clearBtn} onClick={clearSelection}>
-            清空选择 ({selectStore.selectedIngredients.length})
+        <View>
+          <Text className={styles.expand} onClick={() => selectStore.setIsCategoryExpanded(!selectStore.isCategoryExpanded)}>
+            {selectStore.isCategoryExpanded ? '收起' : '展开'}
           </Text>
-        )}
+          {selectStore.selectedIngredients.length > 0 && (
+            <Text className={styles.clearBtn} onClick={clearSelection}>
+              清空选择 ({selectStore.selectedIngredients.length})
+            </Text>
+          )}
+        </View>
+
       </View>
 
       {/* 分类标签 */}
@@ -58,24 +64,25 @@ const IngredientSelector: React.FC<IngredientSelectorProps> = ({ onRecipesChange
         ))}
       </View>
 
-      {/* 食材选择区域 */}
-      <View className={styles.ingredientsGrid}>
-        {selectStore.getCurrentCategoryIngredients.map(ingredient => (
-          <View
-            key={ingredient.foodCode}
-            className={`${styles.ingredientItem} ${selectStore.selectedIngredients.includes(ingredient.foodCode) ? styles.selected : ''
-              }`}
-            onClick={() => selectStore.toggleIngredient(ingredient.foodCode)}
-          >
-            <Text className={styles.ingredientEmoji}>{getEmojiById(ingredient.foodCode)}</Text>
-            <Text className={styles.ingredientName}>{ingredient.foodName}</Text>
-            {selectStore.selectedIngredients.includes(ingredient.foodCode) && (
-              <View className={styles.selectedBadge}>
-                <Text className={styles.selectedText}>✓</Text>
-              </View>
-            )}
-          </View>
-        ))}
+      {/* 食材选择区域（带展开/收起动画） */}
+      <View className={`${styles.collapsible} ${selectStore.isCategoryExpanded ? styles.expanded : styles.collapsed}`}>
+        <View className={styles.ingredientsGrid}>
+          {selectStore.getCurrentCategoryIngredients.map(ingredient => (
+            <View
+              key={ingredient.foodCode}
+              className={`${styles.ingredientItem} ${selectStore.selectedIngredients.includes(ingredient.foodCode) ? styles.selected : ''}`}
+              onClick={() => selectStore.toggleIngredient(ingredient.foodCode)}
+            >
+              <Text className={styles.ingredientEmoji}>{getEmojiById(ingredient.foodCode)}</Text>
+              <Text className={styles.ingredientName}>{ingredient.foodName}</Text>
+              {selectStore.selectedIngredients.includes(ingredient.foodCode) && (
+                <View className={styles.selectedBadge}>
+                  <Text className={styles.selectedText}>✓</Text>
+                </View>
+              )}
+            </View>
+          ))}
+        </View>
       </View>
 
       {/* 已选择的食材预览 */}
@@ -84,7 +91,7 @@ const IngredientSelector: React.FC<IngredientSelectorProps> = ({ onRecipesChange
           <Text className={styles.previewTitle}>已选择的食材：</Text>
           <View className={styles.selectedList}>
             {selectStore.selectedIngredients.map(ingredientId => {
-              const ingredient = selectStore.getCurrentCategoryIngredients
+              const ingredient = selectStore.foodDataList
                 .find(ing => ing.foodCode === ingredientId);
               return ingredient ? (
                 <View key={ingredientId} className={styles.selectedTag}>

@@ -1,6 +1,7 @@
 const iconExt = process.env.TARO_ENV === 'weapp' ? 'png' : 'svg'
 
 export default defineAppConfig({
+  entryPagePath: 'pages/home/index',
   pages: [
     'pages/home/index',
     'pages/tutorial/index',

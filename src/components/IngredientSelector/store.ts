@@ -23,17 +23,27 @@ export interface IngredientSelectorSnapshot {
 }
 
 export class IngredientSelectorStore {
+  /** 已选食材ID列表（使用食材唯一ID） */
   selectedIngredients: string[] = []
+  /** 当前活跃的分类标识 */
   activeCategory: CategoryId = CATEGORY_MAP.VEGETABLES as CategoryId
+  /** 根据已选食材计算得到的菜谱列表 */
   recipes: Recipe[] = []
+  /** 全局加载状态（数据请求中） */
   loading = false
   /** 错误信息（可选） */
   error?: string
   /** 所有食材数据列表 */
   foodDataList: ApiServiceResponse.getAllFoodsResponse['body'] = [];
+  /** 展开收起分类器 */
+  isCategoryExpanded = true;
 
   constructor() {
     makeAutoObservable(this)
+  }
+
+  setIsCategoryExpanded = (isExpanded: boolean) => {
+    this.isCategoryExpanded = isExpanded
   }
 
   setActiveCategory = (cat: CategoryId) => {
