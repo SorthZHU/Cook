@@ -8,7 +8,7 @@ const isDev = env.NODE_ENV !== 'production'
 const isWeapp = (Taro.getEnv && Taro.getEnv() === (Taro as any).ENV_TYPE?.WEAPP) || (process as any)?.env?.TARO_ENV === 'weapp'
 const API_BASE_URL = isDev && !isWeapp
   ? ''
-  : (env.API_BASE_URL || 'http://www.feizaiupup.xyz/')
+  : (env.API_BASE_URL || 'https://www.feizaiupup.xyz/')
 
 // 参数序列化：将数组序列化为逗号分隔，避免qs依赖
 const serializeParams = (params?: Record<string, any>): string => {

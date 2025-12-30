@@ -97,7 +97,7 @@ export default function ApiTest({ className }: ApiTestProps) {
         <View className={styles.infoContent}>
           <Text className={styles.infoItem}>
             <Text className={styles.infoLabel}>接口地址:</Text>
-            <Text className={styles.infoValue}>http://www.feizaiupup.xyz/api/health</Text>
+            <Text className={styles.infoValue}>https://www.feizaiupup.xyz/api/health</Text>
           </Text>
           <Text className={styles.infoItem}>
             <Text className={styles.infoLabel}>请求方法:</Text>
